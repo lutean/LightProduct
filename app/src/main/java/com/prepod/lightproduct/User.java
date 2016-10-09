@@ -1,8 +1,10 @@
 package com.prepod.lightproduct;
 
 
-public class User {
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
+public class User {
     private String username;
     private String password;
 
