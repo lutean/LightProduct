@@ -28,4 +28,6 @@
     <string name="send">Send</string>
     <string name="cancel">Cancel</string>
     <string name="rating">Leave a comment</string>
+    <string name="logged_in">You are logged in</string>
+    <string name="logged_out">You are logged out</string>
 </resources>

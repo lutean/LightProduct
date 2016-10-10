@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.prepod.lightproduct.R;
+import com.prepod.lightproduct.Utils;
 import com.prepod.lightproduct.fragments.ProductDetailsFragment;
 import com.prepod.lightproduct.fragments.ProductsListFragment;
 import com.prepod.lightproduct.fragments.VoteDialogFragment;
@@ -31,7 +32,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements VoteDia
         backBtn = (ImageView) findViewById(R.id.back_btn);
         voteBtn = (ImageView) findViewById(R.id.vote_btn);
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayoutProduct);
-        if (!getToken().equals("")){
+        if (!Utils.getToken(this).equals("")){
             voteBtn.setVisibility(View.VISIBLE);
         }
         voteBtn.setOnClickListener(new View.OnClickListener() {
@@ -72,17 +73,12 @@ public class ProductDetailsActivity extends AppCompatActivity implements VoteDia
         dialog.show(getFragmentManager(), "NoticeDialogFragment");
 
     }
-    private String getToken(){
-        SharedPreferences settings = PreferenceManager
-                .getDefaultSharedPreferences(this);
-        return settings.getString("token", "");
-    }
 
     @Override
     public void onDialogPositiveClick(DialogFragment dialog, String message) {
         Log.v("", "");
         showProductDetails();
-        showMessage(message);
+        Utils.showMessage(coordinatorLayout, message);
     }
 
     @Override
@@ -90,10 +86,4 @@ public class ProductDetailsActivity extends AppCompatActivity implements VoteDia
         Log.v("", "");
     }
 
-    private void showMessage(String message){
-        Snackbar snackbar = Snackbar
-                .make(coordinatorLayout, message, Snackbar.LENGTH_LONG);
-
-        snackbar.show();
-    }
 }

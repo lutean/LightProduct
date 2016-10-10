@@ -14,13 +14,14 @@
         <LinearLayout
             android:id="@+id/drawer_btn"
             android:layout_width="50dp"
+            android:gravity="center_vertical"
             android:layout_height="match_parent">
 
             <ImageView
                 android:id="@+id/back_btn"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:layout_marginTop="16dp"
+
                 android:src="@mipmap/ic_launcher" />
         </LinearLayout>
 

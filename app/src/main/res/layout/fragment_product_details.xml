@@ -46,7 +46,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/feed_image_h"
                 android:background="@color/white"
-                android:scaleType="fitXY"
+                android:scaleType="fitCenter"
                 android:visibility="visible"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"

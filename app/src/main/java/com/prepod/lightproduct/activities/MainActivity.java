@@ -3,6 +3,8 @@ package com.prepod.lightproduct.activities;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -13,11 +15,13 @@ import android.widget.ImageView;
 
 import com.prepod.lightproduct.Consts;
 import com.prepod.lightproduct.R;
+import com.prepod.lightproduct.Utils;
 import com.prepod.lightproduct.fragments.ProductsListFragment;
 
 
 public class MainActivity extends AppCompatActivity {
 
+    private CoordinatorLayout coordinatorLayout;
 
 
     @Override
@@ -30,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         icon.setImageResource(R.drawable.logo);
         Toolbar topToolBar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(topToolBar);
-
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.content_frame);
         showProductsList();
 
     }
@@ -52,17 +56,10 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case 2:
                 Log.v("", "");
-                clearToken();
+                Utils.clearToken(this);
+                Utils.showMessage(coordinatorLayout, getString(R.string.logged_out));
                 return true;
-
-           // case R.id.action_favorite:
-                // User chose the "Favorite" action, mark the current item
-                // as a favorite...
-            //    return true;
-
             default:
-                // If we got here, the user's action was not recognized.
-                // Invoke the superclass to handle it.
                 return super.onOptionsItemSelected(item);
 
         }
@@ -70,8 +67,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-
-        if (getToken().equals("")){
+        if (Utils.getToken(this).equals("")){
             menu.setGroupVisible(0, true);
             menu.setGroupVisible(1, false);
         } else {
@@ -83,11 +79,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-      //  if (getToken().equals("")){
-      //      getMenuInflater().inflate(R.menu.user_in, menu);
-       // } else {
-       //    getMenuInflater().inflate(R.menu.user_out, menu);
-      //  }
         menu.add(0, 1, 0, "Log in");
         menu.add(1, 2, 1, "Log out");
         return super.onCreateOptionsMenu(menu);
@@ -95,26 +86,13 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
         if (requestCode == Consts.REQUSET_CODE_LOGIN){
             if (resultCode == RESULT_OK){
-                Log.v("","");
+                Utils.showMessage(coordinatorLayout, getString(R.string.logged_in));
             }
         }
     }
 
-    private String getToken(){
-        SharedPreferences settings = PreferenceManager
-                .getDefaultSharedPreferences(this);
-        return settings.getString("token", "");
-    }
 
-    private void clearToken() {
-        SharedPreferences settings = PreferenceManager
-                .getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putString("token", "");
-        editor.commit();
-    }
 
 }

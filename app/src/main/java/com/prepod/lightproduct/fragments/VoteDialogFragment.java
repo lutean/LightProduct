@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.prepod.lightproduct.LightProduct;
 import com.prepod.lightproduct.ProductApiInterface;
 import com.prepod.lightproduct.R;
+import com.prepod.lightproduct.Utils;
 import com.prepod.lightproduct.containers.Review;
 
 import retrofit2.Call;
@@ -71,14 +72,8 @@ public class VoteDialogFragment extends DialogFragment {
                         Review review = new Review();
                         review.setText(str);
                         review.setRate(rate);
-                        //CreatedBy createdBy = new CreatedBy();
-                        //createdBy.setUsername(getUserName());
-                        //createdBy.setId(12);
-                        //review.setCreatedBy(createdBy);
-                        String token = getToken();
-
+                        String token = Utils.getToken(getActivity());
                         Call<Review> call = service.sendProductReview("Token " + token, "" + productId, review);
-
                         call.enqueue(new Callback<Review>() {
                             @Override
                             public void onResponse(Call<Review> call, Response<Review> response) {
@@ -90,14 +85,11 @@ public class VoteDialogFragment extends DialogFragment {
                                 } else str = "Posted";
                                 mListener.onDialogPositiveClick(VoteDialogFragment.this, str);
                             }
-
                             @Override
                             public void onFailure(Call<Review> call, Throwable t) {
                                 Log.v("", "");
                             }
                         });
-
-
                     }
                 })
                 .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
@@ -107,11 +99,5 @@ public class VoteDialogFragment extends DialogFragment {
                 });
         return builder.create();
 
-    }
-
-    private String getToken(){
-        SharedPreferences settings = PreferenceManager
-                .getDefaultSharedPreferences(getActivity());
-        return settings.getString("token", "");
     }
 }

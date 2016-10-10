@@ -95,10 +95,12 @@ public class ProductDetailsFragment extends Fragment{
             @Override
             public void onResponse(Call<List<ProductReview>> call, Response<List<ProductReview>> response) {
                 Log.v("My", "" + response);
-                for (int i=0; i<response.body().size(); i++){
-                    product.add(response.body().get(i));
+                if (null != response && null != response.body()) {
+                    for (int i = 0; i < response.body().size(); i++) {
+                        product.add(response.body().get(i));
+                    }
+                    rcAdapter.notifyDataSetChanged();
                 }
-                rcAdapter.notifyDataSetChanged();
                 progressBar.setVisibility(View.INVISIBLE);
             }
 

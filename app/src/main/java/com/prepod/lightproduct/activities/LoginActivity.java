@@ -28,6 +28,7 @@ import com.prepod.lightproduct.Consts;
 import com.prepod.lightproduct.LightProduct;
 import com.prepod.lightproduct.ProductApiInterface;
 import com.prepod.lightproduct.R;
+import com.prepod.lightproduct.Utils;
 import com.prepod.lightproduct.containers.Token;
 import com.prepod.lightproduct.containers.User;
 
@@ -63,7 +64,6 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
                 if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                    //attemptLogin();
                     return true;
                 }
                 return false;
@@ -75,7 +75,6 @@ public class LoginActivity extends AppCompatActivity {
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-               // attemptLogin();
                 String userName = mEmailView.getText().toString();
                 String pass = mPasswordView.getText().toString();
                 if (userName != null && pass != null) {
@@ -86,8 +85,8 @@ public class LoginActivity extends AppCompatActivity {
                             user.setPassword(pass);
                             progressBar.setVisibility(View.VISIBLE);
                             loginUser(user);
-                        } else showMessage(getString(R.string.bad_pass));
-                    } else showMessage(getString(R.string.bad_name));
+                        } else Utils.showMessage(coordinatorLayout, getString(R.string.bad_pass));
+                    } else Utils.showMessage(coordinatorLayout, getString(R.string.bad_name));
                 }
             }
         });
@@ -103,12 +102,10 @@ public class LoginActivity extends AppCompatActivity {
                             user = new User();
                             user.setUsername(userName);
                             user.setPassword(pass);
-                            //testRequest(user);
                             progressBar.setVisibility(View.VISIBLE);
                             registerUser(user);
-                        } else showMessage(getString(R.string.bad_pass));
-                    } else showMessage(getString(R.string.bad_name));
-
+                        } else Utils.showMessage(coordinatorLayout, getString(R.string.bad_pass));
+                    } else Utils.showMessage(coordinatorLayout, getString(R.string.bad_name));
                 }
             }
         });
@@ -142,9 +139,11 @@ public class LoginActivity extends AppCompatActivity {
                     token.setMessage(response.body().getMessage());
                 }
                 if (token.getSuccess()){
-                    storeToken();
+                    Utils.storeToken(getApplicationContext(), token);
+                    setResult(RESULT_OK);
+                    finish();
                 } else {
-                    showMessage(token.getMessage());
+                    Utils.showMessage(coordinatorLayout, token.getMessage());
                 }
             }
             @Override
@@ -171,9 +170,12 @@ public class LoginActivity extends AppCompatActivity {
                     token.setMessage(response.body().getMessage());
                 }
                 if (token.getSuccess()){
-                    storeToken();
+                    Utils.storeToken(getApplicationContext(), token);
+                    setResult(RESULT_OK);
+                    finish();
+
                 } else {
-                    showMessage(token.getMessage());
+                    Utils.showMessage(coordinatorLayout, token.getMessage());
                 }
             }
 
@@ -184,66 +186,6 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         return token.getSuccess();
-    }
-
-    private void showMessage(String message){
-        Snackbar snackbar = Snackbar
-                .make(coordinatorLayout, message, Snackbar.LENGTH_LONG);
-
-        snackbar.show();
-    }
-
-    private void storeToken(){
-        SharedPreferences settings = PreferenceManager
-                .getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putString("token", token.getToken());
-        editor.putString("username", user.getUsername());
-        editor.commit();
-
-        setResult(RESULT_OK);
-        finish();
-
-    }
-
-    private void testRequest(final User user){
-        String url = Consts.BASE_URL + "api/register/";
-
-        RequestQueue queue = Volley.newRequestQueue(this);  // this = context
-
-        StringRequest postRequest = new StringRequest(com.android.volley.Request.Method.POST, url,
-                new com.android.volley.Response.Listener<String>() {
-
-                    @Override
-                    public void onResponse(String response) {
-                        // response
-
-                            Log.d("Response", "" );
-
-
-                    }
-                },
-                new com.android.volley.Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                        Log.d("Error.Response", "" + error);
-                        //Toast.makeText(AuthActivity.this, "Что-то пошло не так..", Toast.LENGTH_SHORT).show();
-
-                    }
-                }
-        ) {
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("username", user.getUsername());
-                params.put("password", user.getPassword());
-                return params;
-            }
-        };
-        RetryPolicy policy = new DefaultRetryPolicy(30000, 3, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-        postRequest.setRetryPolicy(policy);
-        queue.add(postRequest);
     }
 
 

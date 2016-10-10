@@ -83,13 +83,13 @@ public class ProductsListFragment extends Fragment{
             @Override
             public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
                 Log.v("My", "" + response);
-                // if (null != response && null != response.body()) {
+                if (null != response && null != response.body()) {
                 for (int i=0; i<response.body().size(); i++){
                     products.add(response.body().get(i));
                 }
                 //products = response.body();
                 rcAdapter.notifyDataSetChanged();
-                // }
+                }
             }
 
             @Override
