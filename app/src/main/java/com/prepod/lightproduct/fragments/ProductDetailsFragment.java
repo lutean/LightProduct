@@ -1,6 +1,5 @@
 package com.prepod.lightproduct.fragments;
 
-import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,21 +9,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.prepod.lightproduct.Consts;
 import com.prepod.lightproduct.LightProduct;
-import com.prepod.lightproduct.Product;
 import com.prepod.lightproduct.ProductApiInterface;
-import com.prepod.lightproduct.ProductReview;
-import com.prepod.lightproduct.ProductReviewAdapter;
-import com.prepod.lightproduct.ProductsListAdapter;
+import com.prepod.lightproduct.containers.ProductReview;
+import com.prepod.lightproduct.adapters.ProductReviewAdapter;
 import com.prepod.lightproduct.R;
 import com.squareup.picasso.Picasso;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +27,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ProductDetailsFragment extends Fragment {
+public class ProductDetailsFragment extends Fragment{
 
     private ImageView productImage;
     private TextView productText;
@@ -88,6 +82,11 @@ public class ProductDetailsFragment extends Fragment {
         productText.setText(text);
         Picasso.with(getActivity()).load(imageUrl).into(productImage);
 
+        getReviews(productId);
+    }
+
+    private void getReviews(int productId){
+
         ProductApiInterface service = LightProduct.getInstance().getRetrofitClient().create(ProductApiInterface.class);
 
         Call<List<ProductReview>> call = service.getProductReviewById("" + productId);
@@ -109,6 +108,11 @@ public class ProductDetailsFragment extends Fragment {
                 progressBar.setVisibility(View.INVISIBLE);
             }
         });
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.v("My", "" );
     }
 }

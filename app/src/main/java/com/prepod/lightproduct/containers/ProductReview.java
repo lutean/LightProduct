@@ -1,7 +1,8 @@
-package com.prepod.lightproduct;
+package com.prepod.lightproduct.containers;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.prepod.lightproduct.containers.CreatedBy;
 
 public class ProductReview {
 

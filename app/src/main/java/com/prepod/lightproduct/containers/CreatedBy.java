@@ -1,4 +1,4 @@
-package com.prepod.lightproduct;
+package com.prepod.lightproduct.containers;
 
 public class CreatedBy {
 

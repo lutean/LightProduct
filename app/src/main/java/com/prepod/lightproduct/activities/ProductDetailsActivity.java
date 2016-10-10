@@ -1,10 +1,13 @@
 package com.prepod.lightproduct.activities;
 
 import android.app.DialogFragment;
+import android.app.Fragment;
 import android.content.SharedPreferences;
 import android.media.Image;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -16,9 +19,10 @@ import com.prepod.lightproduct.fragments.ProductDetailsFragment;
 import com.prepod.lightproduct.fragments.ProductsListFragment;
 import com.prepod.lightproduct.fragments.VoteDialogFragment;
 
-public class ProductDetailsActivity extends AppCompatActivity{
+public class ProductDetailsActivity extends AppCompatActivity implements VoteDialogFragment.NoticeDialogListener{
     private ImageView backBtn;
     private ImageView voteBtn;
+    private CoordinatorLayout coordinatorLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +30,7 @@ public class ProductDetailsActivity extends AppCompatActivity{
         setContentView(R.layout.activity_product_details);
         backBtn = (ImageView) findViewById(R.id.back_btn);
         voteBtn = (ImageView) findViewById(R.id.vote_btn);
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayoutProduct);
         if (!getToken().equals("")){
             voteBtn.setVisibility(View.VISIBLE);
         }
@@ -73,4 +78,22 @@ public class ProductDetailsActivity extends AppCompatActivity{
         return settings.getString("token", "");
     }
 
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialog, String message) {
+        Log.v("", "");
+        showProductDetails();
+        showMessage(message);
+    }
+
+    @Override
+    public void onDialogNegativeClick(DialogFragment dialog) {
+        Log.v("", "");
+    }
+
+    private void showMessage(String message){
+        Snackbar snackbar = Snackbar
+                .make(coordinatorLayout, message, Snackbar.LENGTH_LONG);
+
+        snackbar.show();
+    }
 }

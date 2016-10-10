@@ -1,15 +1,15 @@
-package com.prepod.lightproduct;
+package com.prepod.lightproduct.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.prepod.lightproduct.R;
+import com.prepod.lightproduct.containers.ProductReview;
 
 import java.util.List;
 

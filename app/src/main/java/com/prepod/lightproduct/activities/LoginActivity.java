@@ -1,15 +1,11 @@
 package com.prepod.lightproduct.activities;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -22,40 +18,25 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.NetworkResponse;
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.prepod.lightproduct.Consts;
 import com.prepod.lightproduct.LightProduct;
-import com.prepod.lightproduct.Product;
 import com.prepod.lightproduct.ProductApiInterface;
 import com.prepod.lightproduct.R;
-import com.prepod.lightproduct.Token;
-import com.prepod.lightproduct.User;
+import com.prepod.lightproduct.containers.Token;
+import com.prepod.lightproduct.containers.User;
 
-import org.json.JSONObject;
-
-import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
-import okio.BufferedSink;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import static android.R.attr.data;
-import static android.R.attr.version;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -67,6 +48,7 @@ public class LoginActivity extends AppCompatActivity {
     private CoordinatorLayout coordinatorLayout;
     private Token token = new Token();
     private ProgressBar progressBar;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,7 +81,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (userName != null && pass != null) {
                     if (isLoginValid(userName)) {
                         if (isPasswordValid(pass)) {
-                            User user = new User();
+                            user = new User();
                             user.setUsername(userName);
                             user.setPassword(pass);
                             progressBar.setVisibility(View.VISIBLE);
@@ -118,7 +100,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (userName != null && pass != null) {
                     if (isLoginValid(userName)) {
                         if (isPasswordValid(pass)) {
-                            User user = new User();
+                            user = new User();
                             user.setUsername(userName);
                             user.setPassword(pass);
                             //testRequest(user);
@@ -216,6 +198,7 @@ public class LoginActivity extends AppCompatActivity {
                 .getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = settings.edit();
         editor.putString("token", token.getToken());
+        editor.putString("username", user.getUsername());
         editor.commit();
 
         setResult(RESULT_OK);

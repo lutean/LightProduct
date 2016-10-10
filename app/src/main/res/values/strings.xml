@@ -24,4 +24,8 @@
     <string name="bad_name">Login is too short</string>
     <string name="bad_pass">Password is too short</string>
     <string name="error">Some error</string>
+    <string name="you_comment">You comment...</string>
+    <string name="send">Send</string>
+    <string name="cancel">Cancel</string>
+    <string name="rating">Leave a comment</string>
 </resources>

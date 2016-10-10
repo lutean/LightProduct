@@ -12,11 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.prepod.lightproduct.LightProduct;
-import com.prepod.lightproduct.Product;
+import com.prepod.lightproduct.containers.Product;
 import com.prepod.lightproduct.ProductApiInterface;
 import com.prepod.lightproduct.R;
-import com.prepod.lightproduct.RecyclerItemClickListener;
-import com.prepod.lightproduct.ProductsListAdapter;
+import com.prepod.lightproduct.listeners.RecyclerItemClickListener;
+import com.prepod.lightproduct.adapters.ProductsListAdapter;
 import com.prepod.lightproduct.activities.ProductDetailsActivity;
 
 import java.util.ArrayList;
